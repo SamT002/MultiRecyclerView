@@ -21,15 +21,19 @@ class MainViewModel(private val repository: MyRepository) : ViewModel() {
         viewModelScope.launch {
             val response = repository.getJokeRepository()
             if (response.isSuccessful) data.postValue(response.body() as List<DataClasses>)
+
+            val book = async { repository.getBookRepos() }.await()
+
+            secondData.postValue(book.body())
         }
     }
 
-    private fun getBook(){
-        viewModelScope.launch {
-            val response = repository.getBookRepos()
-            if (response.isSuccessful) secondData.postValue(response.body())
-        }
-    }
+//    private fun getBook(){
+//        viewModelScope.launch {
+//            val response = repository.getBookRepos()
+//            if (response.isSuccessful) secondData.postValue(response.body())
+//        }
+//    }
 
 
 
